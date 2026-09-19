@@ -346,65 +346,79 @@
       font-size: 1rem;
     }
 
-    /* QR AREA */
-    .qr-box {
+    /* TRANSFER BOX */
+    .transfer-box {
       margin-top: 20px;
-      padding: 15px;
+      padding: 20px;
       background-color: #f9f6f0;
       border: 2px dashed var(--secondary-color);
       border-radius: 8px;
-      text-align: center;
     }
 
     .hidden {
       display: none;
     }
 
-    .qr-image-wrapper img {
-      width: 220px;
-      height: auto;
+    .transfer-info-card {
+      background: #fff;
+      padding: 15px;
       border-radius: 8px;
       margin: 15px 0;
-      border: 1px solid #ccc;
+      border: 1px solid #e2d7c5;
     }
 
-    .transfer-info {
-      text-align: left;
-      background: #fff;
-      padding: 12px;
-      border-radius: 6px;
-      margin-bottom: 10px;
-      border: 1px solid #eee;
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px dashed #eee;
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .info-label {
+      color: #666;
+      font-size: 0.95rem;
+    }
+
+    .info-value {
+      font-weight: bold;
+      color: var(--text-color);
     }
 
     .highlight-price {
       color: #d32f2f;
       font-weight: bold;
+      font-size: 1.1rem;
     }
 
-    .copy-code-box {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #eee;
-      padding: 8px 12px;
-      border-radius: 4px;
-      margin-top: 5px;
-    }
-
-    .copy-code-box button {
+    .copy-btn {
       background: var(--primary-color);
       color: white;
       border: none;
-      padding: 4px 8px;
+      padding: 6px 12px;
       border-radius: 4px;
       cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+    }
+
+    .copy-btn:hover {
+      background-color: #5c2e15;
+    }
+
+    .copy-btn.copied {
+      background-color: var(--accent-color);
     }
 
     .alert-info {
       font-size: 0.85rem;
       color: #666;
       margin-top: 10px;
+      text-align: center;
     }
 
     footer {
@@ -457,9 +471,9 @@
           <p>Sở hữu sách hay với mức giá nhượng lại cực kỳ ưu đãi chỉ từ 15k, 30k.</p>
         </div>
         <div class="feature-card">
-          <i class="fa-solid fa-bolt"></i>
-          <h3>Thanh Toán QR Nhanh</h3>
-          <p>Chuyển khoản tiện lợi qua mã QR Zalo/Ngân hàng tự động điền thông tin.</p>
+          <i class="fa-solid fa-credit-card"></i>
+          <h3>Thanh Toán Tiện Lợi</h3>
+          <p>Chuyển khoản dễ dàng qua Ví ZaloPay / Ngân hàng tự động điền thông tin.</p>
         </div>
       </div>
 
@@ -522,32 +536,54 @@
             </div>
 
             <button type="submit" class="btn btn-success" id="btn-submit-order">
-              <i class="fa-solid fa-qrcode"></i> Xác nhận & Lấy mã QR Chuyển khoản
+              <i class="fa-solid fa-paper-plane"></i> Xác nhận & Lấy thông tin chuyển khoản
             </button>
           </form>
 
-          <!-- Khu vực QR hiển thị sau khi nhập form -->
-          <div id="qr-payment-area" class="qr-box hidden">
-            <h3><i class="fa-solid fa-circle-check"></i> Tạo đơn hàng thành công!</h3>
-            <p style="font-size: 0.9rem; margin-top: 5px;">Vui lòng quét mã QR dưới đây để hoàn tất thanh toán:</p>
+          <!-- Khu vực hiển thị thông tin chuyển khoản sau khi bấm mua -->
+          <div id="payment-area" class="transfer-box hidden">
+            <h3 style="text-align: center; color: var(--accent-color);">
+              <i class="fa-solid fa-circle-check"></i> Tạo đơn hàng thành công!
+            </h3>
+            <p style="font-size: 0.9rem; margin-top: 5px; text-align: center;">
+              Vui lòng chuyển khoản theo thông tin dưới đây để hoàn tất đơn hàng:
+            </p>
 
-            <div class="qr-image-wrapper">
-              <!-- Nhớ tải ảnh QR lên GitHub cùng thư mục và đặt tên là qr-bank.jpg -->
-              <img src="qr-bank.jpg" alt="Mã QR Chuyển Khoản TRAN LE QUANG">
-            </div>
-
-            <div class="transfer-info">
-              <p><strong>Chủ tài khoản:</strong> TRAN LE QUANG</p>
-              <p><strong>Số tiền:</strong> <span id="qr-amount" class="highlight-price">0 VNĐ</span></p>
-              <p style="margin-top: 5px;"><strong>Nội dung chuyển khoản (Bắt buộc):</strong></p>
-              <div class="copy-code-box">
-                <code id="transfer-content">---</code>
-                <button onclick="copyTransferContent()"><i class="fa-solid fa-copy"></i> Sao chép</button>
+            <div class="transfer-info-card">
+              <div class="info-row">
+                <span class="info-label">Ngân hàng nhận:</span>
+                <span class="info-value">Zalo Pay - CTCP Zion</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Chủ tài khoản:</span>
+                <span class="info-value">TRAN LE QUANG</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Số tài khoản:</span>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="info-value" id="stk-val">0972217042</span>
+                  <button class="copy-btn" onclick="copyText('stk-val', this)">
+                    <i class="fa-solid fa-copy"></i> Sao chép
+                  </button>
+                </div>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Số tiền:</span>
+                <span class="info-value highlight-price" id="transfer-amount">0 VNĐ</span>
+              </div>
+              <div class="info-row" style="flex-direction: column; align-items: flex-start; gap: 6px; margin-top: 5px;">
+                <span class="info-label">Nội dung chuyển khoản (Bắt buộc):</span>
+                <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; background: #f0f0f0; padding: 8px 12px; border-radius: 6px; border: 1px solid #ddd;">
+                  <strong id="transfer-content" style="color: var(--primary-color); font-size: 0.95rem;">---</strong>
+                  <button class="copy-btn" onclick="copyText('transfer-content', this)">
+                    <i class="fa-solid fa-copy"></i> Sao chép
+                  </button>
+                </div>
               </div>
             </div>
 
             <div class="alert-info">
-              <i class="fa-solid fa-info-circle"></i> Sau khi chuyển khoản xong, shop sẽ gửi tin nhắn xác nhận qua số Zalo bạn cung cấp!
+              <i class="fa-solid fa-info-circle"></i> Sau khi chuyển khoản thành công, shop sẽ liên hệ qua Zalo để xác nhận và gửi sách cho bạn!
             </div>
           </div>
 
@@ -766,17 +802,27 @@
       const transferContent = `${zalo} - ${bookTitles}`;
       const totalAmount = cart.reduce((sum, item) => sum + item.price, 0);
 
-      document.getElementById("qr-amount").innerText = totalAmount.toLocaleString('vi-VN') + " VNĐ";
+      document.getElementById("transfer-amount").innerText = totalAmount.toLocaleString('vi-VN') + " VNĐ";
       document.getElementById("transfer-content").innerText = transferContent;
-      document.getElementById("qr-payment-area").classList.remove("hidden");
+      document.getElementById("payment-area").classList.remove("hidden");
 
-      document.getElementById("qr-payment-area").scrollIntoView({ behavior: 'smooth' });
+      document.getElementById("payment-area").scrollIntoView({ behavior: 'smooth' });
     }
 
-    function copyTransferContent() {
-      const content = document.getElementById("transfer-content").innerText;
+    // Hàm sao chép nội dung khi bấm nút
+    function copyText(elementId, btnElement) {
+      const content = document.getElementById(elementId).innerText;
       navigator.clipboard.writeText(content).then(() => {
-        alert("Đã sao chép nội dung chuyển khoản!");
+        const originalText = btnElement.innerHTML;
+        btnElement.innerHTML = '<i class="fa-solid fa-check"></i> Đã chép';
+        btnElement.classList.add('copied');
+        
+        setTimeout(() => {
+          btnElement.innerHTML = originalText;
+          btnElement.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        alert("Sao chép thất bại, vui lòng chọn và sao chép thủ công!");
       });
     }
   </script>
